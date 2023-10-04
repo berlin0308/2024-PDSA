@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\ASUS\\Desktop\\2024-PDSA\\json-simple-1.1.1.jar",
+        "c:\\Users\\ASUS\\Desktop\\2024-PDSA\\algs4.jar"
+    ]
+}
