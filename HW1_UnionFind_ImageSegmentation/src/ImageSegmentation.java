@@ -1,4 +1,13 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 class ImageSegmentation {
 
@@ -53,7 +62,7 @@ class ImageSegmentation {
                 // System.out.println(root);
                 segmentSizes[root] ++;
                 // System.out.println(segmentSizes[root]);
-                if(segmentSizes[root] > largestSize){
+                if(segmentSizes[root] > largestSize || (segmentSizes[root] == largestSize && inputImage[i/size][i%size] < largestColor)){
                     largestSize = segmentSizes[root];
                     largestColor = inputImage[root/size][root%size];
                 }
@@ -77,43 +86,123 @@ class ImageSegmentation {
         uf.union(x1*size+y1, x2*size+y2);
 	}
 	
-	public static void main(String args[]) {
+	// public static void main(String args[]) {
 
-	    // Example 1:
-	    int[][] inputImage1 = {
-	        {0, 0, 0},
-	        {0, 1, 1},
-	        {0, 0, 1}
-	    };
+	//     // Example 1:
+	//     int[][] inputImage1 = {
+	//         {0, 0, 0},
+	//         {0, 1, 1},
+	//         {0, 0, 1}
+	//     };
         
-        System.out.println("Example 1:");
+    //     System.out.println("Example 1:");
 
-	    ImageSegmentation s = new ImageSegmentation(3, inputImage1);
-	    System.out.println("Distinct Segments Count: " + s.countDistinctSegments());
+	//     ImageSegmentation s = new ImageSegmentation(3, inputImage1);
+	//     System.out.println("Distinct Segments Count: " + s.countDistinctSegments());
         
-	    int[] largest = s.findLargestSegment();
-	    System.out.println("Largest Segment Size: " + largest[0]);
-	    System.out.println("Largest Segment Color: " + largest[1]);
+	//     int[] largest = s.findLargestSegment();
+	//     System.out.println("Largest Segment Size: " + largest[0]);
+	//     System.out.println("Largest Segment Color: " + largest[1]);
 	    
 	
-	    // Example 2:
-	    int[][] inputImage2 = {
-               {0, 0, 0, 3, 0},
-               {0, 2, 3, 3, 0},
-               {1, 2, 2, 0, 0},
-               {1, 2, 2, 1, 1},
-               {0, 0, 1, 1, 1}
-	    };
+	//     // Example 2:
+	//     int[][] inputImage2 = {
+    //            {0, 0, 0, 3, 0},
+    //            {0, 2, 3, 3, 0},
+    //            {1, 2, 2, 0, 0},
+    //            {1, 2, 2, 1, 1},
+    //            {0, 0, 1, 1, 1}
+	//     };
         
-	    System.out.println("\nExample 2:");
+	//     System.out.println("\nExample 2:");
         
-	    s = new ImageSegmentation(5, inputImage2);
-	    System.out.println("Distinct Segments Count: " + s.countDistinctSegments());
+	//     s = new ImageSegmentation(5, inputImage2);
+	//     System.out.println("Distinct Segments Count: " + s.countDistinctSegments());
         
-	    largest = s.findLargestSegment();
-	    System.out.println("Largest Segment Size: " + largest[0]);
-	    System.out.println("Largest Segment Color: " + largest[1]);
+	//     largest = s.findLargestSegment();
+	//     System.out.println("Largest Segment Size: " + largest[0]);
+	//     System.out.println("Largest Segment Color: " + largest[1]);
 	    
-	}
+	// }
 
+
+    public static void test(String[] args){
+        ImageSegmentation s;
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader(args[0])){
+            JSONArray all = (JSONArray) jsonParser.parse(reader);
+            int count = 0;
+            for(Object CaseInList : all){
+                count++;
+                JSONObject aCase = (JSONObject) CaseInList;
+                JSONArray dataArray = (JSONArray) aCase.get("data");
+
+                // JSONObject data = (JSONObject) aCase.get("data");
+                // JSONArray dataArray = (JSONArray) data.get("data");
+
+                int testSize = 0; int waSize = 0;
+                System.out.print("Case ");
+                System.out.println(count);
+                for (Object dataObject : dataArray) {
+                    JSONObject dataDetails = (JSONObject) dataObject;
+                    int N = ((Long) dataDetails.get("N")).intValue();
+                    JSONArray imageArray = (JSONArray) dataDetails.get("image");
+
+                    int[][] image = new int[imageArray.size()][];
+                    for (int i = 0; i < imageArray.size(); i++) {
+                        JSONArray row = (JSONArray) imageArray.get(i);
+                        image[i] = new int[row.size()];
+                        for (int j = 0; j < row.size(); j++) {
+                            image[i][j] = ((Long) row.get(j)).intValue();
+                        }
+                    }
+                    // System.out.println("N: " + N);
+                    // System.out.println("Image: " + Arrays.deepToString(image));
+
+                    s = new ImageSegmentation(N, image);
+
+                    int distinctSegments = ((Long) dataDetails.get("DistinctSegments")).intValue();
+
+                    JSONArray largestSegmentArray = (JSONArray) dataDetails.get("LargestSegment");
+                    int largestColor = ((Long) largestSegmentArray.get(0)).intValue();
+                    int largestSize = ((Long) largestSegmentArray.get(1)).intValue();
+
+                    int ans1 = s.countDistinctSegments();
+                    int ans2 = s.findLargestSegment()[0];
+                    int ans3 = s.findLargestSegment()[1];
+
+                    testSize++;
+                    if(ans1==distinctSegments && ans2==largestColor && ans3==largestSize){
+                        // System.out.println("AC");
+
+                    }else{
+                        waSize++;
+                        // System.out.println("WA");
+                    }
+                }
+                System.out.println("Score: " + (testSize-waSize) + " / " + testSize + " ");
+
+            }
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int[] JSONArraytoIntArray(JSONArray x){
+        int sizeLim = x.size();
+        int MyInt[] = new int[sizeLim];
+        for(int i=0;i<sizeLim;i++){
+            MyInt[i]= Integer.parseInt(x.get(i).toString());
+        }
+        return MyInt;
+    }
+
+    public static void main(String[] args) {
+        // test(args);
+        test(new String[]{"src/test.json"});
+    }
 }
