@@ -10,13 +10,21 @@ class OutputFormat{
     int N;
     ImageSegmentation s;
     int DistinctSegments;
-    int[] LargestSegment;
+    Integer[] LargestSegment;
     OutputFormat(int N, int[][] image) {
         this.N = N;
         this.image = image;
         this.s = new ImageSegmentation(this.N, this.image);
         this.DistinctSegments = s.countDistinctSegments();
-        this.LargestSegment = s.findLargestSegment();
+        this.LargestSegment = convertIntArrayToIntegerArray(s.findLargestSegment());
+    }
+
+    private Integer[] convertIntArrayToIntegerArray(int[] intArray) {
+        Integer[] result = new Integer[intArray.length];
+        for (int i = 0; i < intArray.length; i++) {
+            result[i] = intArray[i];
+        }
+        return result;
     }
 }
 class RandomGenerator {
@@ -58,14 +66,23 @@ class RandomGenerator {
     public static OutputFormat ProblemGenerator(int N, int C, int seedCount,int expansionSteps){
 
         long startTime = System.nanoTime();
-        int[][] image = ImageGenerator.generateSegmentedImage(N, C, seedCount, expansionSteps);
+        int[][] image = ImageGenerator.generateSegmentedImage(N, C, seedCount, expansionSteps, false);
+        new ImageSegmentation(N, image);
+        long endTime = System.nanoTime();
+        System.out.println("Execution Time: " + Long.toString((endTime-startTime)/1000000) + " ms");
+        return new OutputFormat(N, image);
+    }
+    public static OutputFormat ProblemGenerator(int N, int C, int seedCount,int expansionSteps, boolean bg){
+
+        long startTime = System.nanoTime();
+        int[][] image = ImageGenerator.generateSegmentedImage(N, C, seedCount, expansionSteps, bg);
         new ImageSegmentation(N, image);
         long endTime = System.nanoTime();
         System.out.println("Execution Time: " + Long.toString((endTime-startTime)/1000000) + " ms");
         return new OutputFormat(N, image);
     }
     public static void main(String[] args) throws Exception {
-        Path path = Paths.get("./src/test.json");
+        Path path = Paths.get("./src/ImageSegmentation.json");
         Gson myGson = new Gson();
 
         String output = "[";
@@ -91,44 +108,42 @@ class RandomGenerator {
                 myGson.toJson(CustomProblem(2,3))+","+
                 myGson.toJson(CustomProblem(2,4))+
                 "]" +
-                "},";
+                "}" + ']';
         // //case 3
-        output+="{"+
-                "\"case\": "+3+","+
-                "\"score\": 20,"+
-                "\"data\": ["+
-                myGson.toJson(ProblemGenerator(16, 6, 5, 6))+","+
-                myGson.toJson(ProblemGenerator(20, 10, 10, 5))+","+
-                myGson.toJson(ProblemGenerator(25, 8, 20, 90))+","+
-                myGson.toJson(ProblemGenerator(25, 10, 4, 200))+
-                "]" +
-                "},";
-        // //case 4
-        output+="{"+
-                "\"case\": "+4+","+
-                "\"score\": 20,"+
-                "\"data\": ["+
-                myGson.toJson(ProblemGenerator(80, 16, 5, 12))+","+
-                myGson.toJson(ProblemGenerator(80, 36, 10, 40))+","+
-                myGson.toJson(ProblemGenerator(100, 8, 20, 500))+","+
-                myGson.toJson(ProblemGenerator(100, 35, 20, 800))+","+
-                myGson.toJson(ProblemGenerator(100, 50, 4, 2000))+
-                "]" +
-                "},";
-        // //case 5
-        output+="{"+
-                "\"case\": "+5+","+
-                "\"score\": 20,"+
-                "\"data\": ["+
-                myGson.toJson(ProblemGenerator(200, 16, 5, 1000))+","+
-                myGson.toJson(ProblemGenerator(200, 36, 1, 30000))+","+
-                myGson.toJson(ProblemGenerator(500, 20, 2, 2))+","+
-                myGson.toJson(ProblemGenerator(800, 60, 80, 80))+","+
-                myGson.toJson(ProblemGenerator(1000, 35, 2000, 800))+","+
-                myGson.toJson(ProblemGenerator(1000, 100, 100, 2000))+
-                "]" +
-                "}"
-                +"]";
+        // output+="{"+
+        //         "\"case\": "+3+","+
+        //         "\"score\": 20,"+
+        //         "\"data\": ["+
+        //         myGson.toJson(ProblemGenerator(16, 6, 5, 6))+","+
+        //         myGson.toJson(ProblemGenerator(20, 10, 10, 5))+","+
+        //         myGson.toJson(ProblemGenerator(25, 8, 20, 90))+","+
+        //         myGson.toJson(ProblemGenerator(25, 10, 4, 200))+
+        //         "]" +
+        //         "},";
+        // // //case 4
+        // output+="{"+
+        //         "\"case\": "+4+","+
+        //         "\"score\": 20,"+
+        //         "\"data\": ["+
+        //         myGson.toJson(ProblemGenerator(80, 16, 5, 12))+","+
+        //         myGson.toJson(ProblemGenerator(80, 36, 10, 40))+","+
+        //         myGson.toJson(ProblemGenerator(100, 8, 20, 500))+","+
+        //         myGson.toJson(ProblemGenerator(100, 35, 20, 800))+","+
+        //         myGson.toJson(ProblemGenerator(100, 50, 4, 2000))+
+        //         "]" +
+        //         "},";
+        // // //case 5
+        // output+="{"+
+        //         "\"case\": "+5+","+
+        //         "\"score\": 20,"+
+        //         "\"data\": ["+
+        //         myGson.toJson(ProblemGenerator(200, 16, 5, 1000))+","+
+        //         myGson.toJson(ProblemGenerator(400, 10, 6, 2000))+","+
+        //         myGson.toJson(ProblemGenerator(500, 10, 8, 30000, true))+","+
+        //         myGson.toJson(ProblemGenerator(200, 2, 10, 20000, true))+
+        //         "]" +
+        //         "}"
+        //         +"]";
 
         Files.writeString(path, output, StandardCharsets.UTF_8);
         //Files.writeString(path, output,StandardCharsets.UTF_8,StandardOpenOption.APPEND);

@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/algs4.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/json-simple-1.1.1.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/gson-2.2.2.jar/**/*.jar"
+    ]
+}

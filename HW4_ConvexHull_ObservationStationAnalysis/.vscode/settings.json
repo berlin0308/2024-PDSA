@@ -1,9 +1,15 @@
 {
-    "java.project.sourcePaths": ["src"],
+    "java.project.sourcePaths": [
+        "src",
+        "release"
+    ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\algs4.jar",
-        "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\json-simple-1.1.1.jar"
+        "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\json-simple-1.1.1.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/json-simple-1.1.1.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/algs4.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/gson-2.2.2.jar/**/*.jar"
     ]
 }

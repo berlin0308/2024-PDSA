@@ -1,7 +1,7 @@
 {
     "java.project.sourcePaths": [
         "src",
-        "test_case"
+        "gpt-create"
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
@@ -10,7 +10,10 @@
         "c:\\Users\\ASUS\\Desktop\\2024-PDSA\\algs4.jar",
         "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\json-simple-1.1.1.jar",
         "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\algs4.jar",
-        "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\gson-2.2.2.jar\\gson-2.2.2.jar"
+        "c:\\Users\\ASUS\\Desktop\\2024-practical-data-structures-algorithms\\gson-2.2.2.jar\\gson-2.2.2.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/algs4.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/json-simple-1.1.1.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/gson-2.2.2.jar/**/*.jar"
     ],
     "editor.inlineSuggest.showToolbar": "onHover"
 }

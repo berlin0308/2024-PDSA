@@ -5,8 +5,16 @@ public class ImageGenerator {
     private static final int[] DX = {-1, 1, 0, 0};
     private static final int[] DY = {0, 0, -1, 1};
 
-    public static int[][] generateSegmentedImage(int N, int C, int seedCount, int expansionSteps) {
+    public static int[][] generateSegmentedImage(int N, int C, int seedCount, int expansionSteps, boolean bg) {
         int[][] image = new int[N][N];
+        if(bg){
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    image[i][j] = 255;
+                }
+            }
+        }
+
         Random random = new Random();
 
         for (int s = 0; s < seedCount; s++) {

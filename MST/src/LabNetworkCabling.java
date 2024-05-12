@@ -12,6 +12,17 @@ import edu.princeton.cs.algs4.Edge;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.UF;
 
+// import java.io.FileNotFoundException;
+// import java.io.FileReader;
+// import java.io.IOException;
+
+// import org.json.simple.JSONArray;
+// import org.json.simple.JSONObject;
+// import org.json.simple.parser.JSONParser;
+// import org.json.simple.parser.ParseException;
+
+
+
 class LabNetworkCabling {
 
     private PrimMST MST;
@@ -82,7 +93,7 @@ class LabNetworkCabling {
         int maxCount = -1;
         for(int printer: printers){
             int count = printerVote.get(printer);
-            if(count>maxCount){
+            if(count>maxCount){ // if two printers have the same amount of voting, return the smallest one
                 popularPrinter = printer;
                 maxCount = count;
             }
@@ -90,33 +101,122 @@ class LabNetworkCabling {
         return popularPrinter;
     }
 
-    public static void main(String[] args) {
-        Map<Integer, String> deviceTypes = Map.of(
-            0, "Router",
-            1, "Server",
-            2, "Printer",
-            3, "Printer",
-            4, "Computer",
-            5, "Computer",
-            6, "Computer"
-        );
+    // public static void main(String[] args) {
+    //     Map<Integer, String> deviceTypes = Map.of(
+    //         0, "Router",
+    //         1, "Server",
+    //         2, "Printer",
+    //         3, "Printer",
+    //         4, "Computer",
+    //         5, "Computer",
+    //         6, "Computer"
+    //     );
 
-        List<int[]> links = List.of(
-            new int[]{0, 1, 1},
-            new int[]{1, 2, 2},
-            new int[]{2, 4, 1},
-            new int[]{0, 3, 3},
-            new int[]{1, 3, 8},
-            new int[]{3, 5, 2},
-            new int[]{3, 6, 9},
-            new int[]{0, 6, 1}
-        );
+    //     List<int[]> links = List.of(
+    //         new int[]{0, 1, 1},
+    //         new int[]{1, 2, 2},
+    //         new int[]{2, 4, 1},
+    //         new int[]{0, 3, 3},
+    //         new int[]{1, 3, 8},
+    //         new int[]{3, 5, 2},
+    //         new int[]{3, 6, 9},
+    //         new int[]{0, 6, 1}
+    //     );
 
-        LabNetworkCabling Network = new LabNetworkCabling(deviceTypes, links);
-        System.out.println("Total Cabling Cost: "+Network.cablingCost());
-        System.out.println("Distance between Server and Router: "+Network.serverToRouter());
-        System.out.println("Most Popular Printer: "+Network.mostPopularPrinter());
-    }
+    //     LabNetworkCabling Network = new LabNetworkCabling(deviceTypes, links);
+    //     System.out.println("Total Cabling Cost: "+Network.cablingCost());
+    //     System.out.println("Distance between Server and Router: "+Network.serverToRouter());
+    //     System.out.println("Most Popular Printer: "+Network.mostPopularPrinter());
+    // }
+
+
+
+    //   public static void test(String[] args){
+    //     LabNetworkCabling l;
+    //     JSONParser jsonParser = new JSONParser();
+    //     try (FileReader reader = new FileReader(args[0])){
+    //         JSONArray all = (JSONArray) jsonParser.parse(reader);
+    //         int count = 0;
+    //         for(Object CaseInList : all){
+    //             count++;
+    //             JSONObject aCase = (JSONObject) CaseInList;
+    //             JSONArray dataArray = (JSONArray) aCase.get("data");
+
+    //             // JSONObject data = (JSONObject) aCase.get("data");
+    //             // JSONArray dataArray = (JSONArray) data.get("data");
+
+    //             int testSize = 0; int waSize = 0;
+    //             System.out.print("Case ");
+    //             System.out.println(count);
+
+    //             for (Object dataObj : dataArray) {
+    //                 JSONObject data = (JSONObject) dataObj;
+
+    //                 // Extracting device types
+    //                 JSONObject jsonDeviceTypes = (JSONObject) data.get("deviceTypes");
+    //                 Map<Integer, String> deviceTypes = new HashMap<>();
+    //                 for (Object key : jsonDeviceTypes.keySet()) {
+    //                     String keyStr = (String) key;
+    //                     String value = (String) jsonDeviceTypes.get(keyStr);
+    //                     deviceTypes.put(Integer.parseInt(keyStr), value);
+    //                 }
+
+    //                 // Extracting links
+    //                 JSONArray jsonLinks = (JSONArray) data.get("links");
+    //                 List<int[]> links = new ArrayList<>();
+    //                 for (Object linkObj : jsonLinks) {
+    //                     JSONArray linkArr = (JSONArray) linkObj;
+    //                     int[] link = new int[linkArr.size()];
+    //                     for (int i = 0; i < linkArr.size(); i++) {
+    //                         link[i] = ((Long) linkArr.get(i)).intValue();
+    //                     }
+    //                     links.add(link);
+    //                 }
+
+    //                 long cablingCost = (long) data.get("cablingCost");
+    //                 long serverToRouter = (long) data.get("serverToRouter");
+    //                 long mostPopularPrinter = (long) data.get("mostPopularPrinter");
+
+    //                 l = new LabNetworkCabling(deviceTypes, links);
+
+    //                 int ans1 = l.cablingCost();
+    //                 int ans2 = l.serverToRouter();
+    //                 int ans3 = l.mostPopularPrinter();
+
+    //                 testSize++;
+    //                 if(ans1==cablingCost && ans2==serverToRouter && ans3==mostPopularPrinter){
+    //                     // System.out.println("AC");
+
+    //                 }else{
+    //                     waSize++;
+    //                     // System.out.println("WA");
+    //                 }
+    //             }
+    //             System.out.println("Score: " + (testSize-waSize) + " / " + testSize + " ");
+
+    //         }
+    //     }catch (FileNotFoundException e) {
+    //         e.printStackTrace();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     } catch (ParseException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
+    // public static int[] JSONArraytoIntArray(JSONArray x){
+    //     int sizeLim = x.size();
+    //     int MyInt[] = new int[sizeLim];
+    //     for(int i=0;i<sizeLim;i++){
+    //         MyInt[i]= Integer.parseInt(x.get(i).toString());
+    //     }
+    //     return MyInt;
+    // }
+
+    // public static void main(String[] args) {
+    //     // test(args);
+    //     test(new String[]{"test/test.json"});
+    // }
 }
 
 class PrimMST {

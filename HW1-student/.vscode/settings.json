@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/berlin/Desktop/2024-practical-data-structures-algorithms/algs4.jar"
+    ]
+}
